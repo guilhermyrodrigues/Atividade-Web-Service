@@ -13,8 +13,8 @@ public class ItensPedidoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column
+    @Column(name = "qtdeITEM")
     private Integer qtdeItem;
-    @Column
+    @Column(name = "valorUNIDADE")
     private Double valUnidade;
 }

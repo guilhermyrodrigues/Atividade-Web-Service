@@ -16,9 +16,11 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "api/itens")
+@RequestMapping(value = "api/v1/itens")
 @Tag(name = "ItensPedido API", description = "API para gerenciamento de itens do pedido")
 public class ItensPedidoResource implements IResource<ItensPedidoDTO, Integer> {
+
+    // @author Guilhermy Rodrigues
 
     @Autowired
     ItensPedidoService itensPedidoService;

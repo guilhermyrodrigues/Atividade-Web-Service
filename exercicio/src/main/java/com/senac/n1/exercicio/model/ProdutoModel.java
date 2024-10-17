@@ -12,10 +12,10 @@ public class ProdutoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column
-    private String desPro;
-    @Column
+    @Column(name = "descriPRODUTO")
+    private String descriPro;
+    @Column(name = "qtdePRODUTO")
     private Integer qtdeProduto;
-    @Column
-    private Double varProduto;
+    @Column(name = "valorPRODUTO")
+    private Double valorProduto;
 }

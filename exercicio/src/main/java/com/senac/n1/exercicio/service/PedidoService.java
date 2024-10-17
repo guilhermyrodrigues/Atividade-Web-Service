@@ -2,7 +2,9 @@ package com.senac.n1.exercicio.service;
 
 import com.senac.n1.exercicio.dto.PedidoDTO;
 import com.senac.n1.exercicio.interfaces.IService;
+import com.senac.n1.exercicio.repository.PedidoRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +13,8 @@ import java.util.List;
 /**
  * Serviço para gerenciamento de pedidos. Implementa as operações de
  * criação, leitura, atualização e remoção de pedidos.
+ *
+ * @author Guilhermy Rodrigues
  */
 @Service
 @Slf4j
@@ -22,6 +26,10 @@ public class PedidoService implements IService<PedidoDTO, Integer> {
      * @param entity DTO do pedido a ser criado
      * @return DTO do pedido criado
      */
+
+    @Autowired
+    public PedidoRepository pedidoRepository;
+
     @Override
     @Transactional(rollbackFor = Throwable.class)
     public PedidoDTO create(PedidoDTO entity) {

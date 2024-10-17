@@ -16,9 +16,11 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping(value = "api/produtos")
+@RequestMapping(value = "api/v1/produtos")
 @Tag(name = "Produto API", description = "API para gerenciamento de produtos")
 public class ProdutoResource implements IResource<ProdutoDTO, Integer> {
+
+    // @author Guilhermy Rodrigues
 
     @Autowired
     ProdutoService produtoService;

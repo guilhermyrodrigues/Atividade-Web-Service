@@ -2,7 +2,9 @@ package com.senac.n1.exercicio.service;
 
 import com.senac.n1.exercicio.dto.ProdutoDTO;
 import com.senac.n1.exercicio.interfaces.IService;
+import com.senac.n1.exercicio.repository.ProdutoRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +13,8 @@ import java.util.List;
 /**
  * Serviço para gerenciamento de produtos. Implementa as operações de
  * criação, leitura, atualização e remoção de produtos.
+ *
+ * @author Guilhermy Rodrigues
  */
 @Service
 @Slf4j
@@ -22,6 +26,10 @@ public class ProdutoService implements IService<ProdutoDTO, Integer> {
      * @param entity DTO do produto a ser criado
      * @return DTO do produto criado
      */
+
+    @Autowired
+    public ProdutoRepository produtoRepository;
+
     @Override
     @Transactional(rollbackFor = Throwable.class)
     public ProdutoDTO create(ProdutoDTO entity) {

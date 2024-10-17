@@ -2,7 +2,9 @@ package com.senac.n1.exercicio.service;
 
 import com.senac.n1.exercicio.dto.ItensPedidoDTO;
 import com.senac.n1.exercicio.interfaces.IService;
+import com.senac.n1.exercicio.repository.ItensPedidoRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,10 +13,15 @@ import java.util.List;
 /**
  * Serviço para gerenciamento de itens do pedido. Implementa as operações de
  * criação, leitura, atualização e remoção de itens de um pedido.
+ *
+ * @author Guilhermy Rodrigues
  */
 @Service
 @Slf4j
 public class ItensPedidoService implements IService<ItensPedidoDTO, Integer> {
+
+    @Autowired
+    public ItensPedidoRepository itensPedidoRepository;
 
     /**
      * Cria um novo item no pedido.
@@ -57,7 +64,7 @@ public class ItensPedidoService implements IService<ItensPedidoDTO, Integer> {
         log.info("ItensPedidoService::read()");
         log.debug("Valores: sem parâmetros");
         // Implementação do método de leitura de todos os itens
-        return List.of();
+        return null;
     }
 
     /**
@@ -87,5 +94,6 @@ public class ItensPedidoService implements IService<ItensPedidoDTO, Integer> {
         log.info("ItensPedidoService::delete");
         log.debug("Valores: {}", id);
         // Implementação do método de deleção
+
     }
 }
