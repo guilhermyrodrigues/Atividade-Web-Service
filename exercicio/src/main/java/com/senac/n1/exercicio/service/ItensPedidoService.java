@@ -2,6 +2,8 @@ package com.senac.n1.exercicio.service;
 
 import com.senac.n1.exercicio.dto.ItensPedidoDTO;
 import com.senac.n1.exercicio.interfaces.IService;
+import com.senac.n1.exercicio.mapper.ItensPedidoMapper;
+import com.senac.n1.exercicio.model.ItensPedidoModel;
 import com.senac.n1.exercicio.repository.ItensPedidoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +15,16 @@ import java.util.List;
 /**
  * Serviço para gerenciamento de itens do pedido. Implementa as operações de
  * criação, leitura, atualização e remoção de itens de um pedido.
- *
- * @author Guilhermy Rodrigues
  */
 @Service
 @Slf4j
 public class ItensPedidoService implements IService<ItensPedidoDTO, Integer> {
 
     @Autowired
-    public ItensPedidoRepository itensPedidoRepository;
+    ItensPedidoRepository itensPedidoRepository;
+
+    @Autowired
+    ItensPedidoMapper itensPedidoMapper;
 
     /**
      * Cria um novo item no pedido.
@@ -35,7 +38,9 @@ public class ItensPedidoService implements IService<ItensPedidoDTO, Integer> {
         log.info("ItensPedidoService::create");
         log.debug("Valores: {}", entity);
         // Implementação do método de criação
-        return null;
+        ItensPedidoModel itensPedidoModel = itensPedidoMapper.toEntity(entity);
+        ItensPedidoModel itensPedidoSalvo = itensPedidoRepository.save(itensPedidoModel);
+        return itensPedidoMapper.toDTO(itensPedidoSalvo);
     }
 
     /**
@@ -50,7 +55,9 @@ public class ItensPedidoService implements IService<ItensPedidoDTO, Integer> {
         log.info("ItensPedidoService::read(id)");
         log.debug("Valores: {}", id);
         // Implementação do método de leitura por ID
-        return null;
+        return itensPedidoRepository.findById(id)
+                .map(itensPedidoMapper::toDTO)
+                .orElseThrow(() -> new RuntimeException("ItensPedido com ID " + id + " não encontrado"));
     }
 
     /**
@@ -64,7 +71,8 @@ public class ItensPedidoService implements IService<ItensPedidoDTO, Integer> {
         log.info("ItensPedidoService::read()");
         log.debug("Valores: sem parâmetros");
         // Implementação do método de leitura de todos os itens
-        return null;
+        List<ItensPedidoModel> itensPedidoModels = itensPedidoRepository.findAll();
+        return itensPedidoMapper.toDTOList(itensPedidoModels);
     }
 
     /**
@@ -80,7 +88,12 @@ public class ItensPedidoService implements IService<ItensPedidoDTO, Integer> {
         log.info("ItensPedidoService::update");
         log.debug("Valores: {} e {}", id, entity);
         // Implementação do método de atualização
-        return null;
+        ItensPedidoModel itensPedidoModel = itensPedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ItensPedido com ID" + id + " não encontrado "));
+
+        itensPedidoMapper.updateEntityFromDTO(entity, itensPedidoModel);
+        ItensPedidoModel itensPedidoModeAtualizado = itensPedidoRepository.save(itensPedidoModel);
+        return itensPedidoMapper.toDTO(itensPedidoModeAtualizado);
     }
 
     /**
@@ -94,6 +107,9 @@ public class ItensPedidoService implements IService<ItensPedidoDTO, Integer> {
         log.info("ItensPedidoService::delete");
         log.debug("Valores: {}", id);
         // Implementação do método de deleção
-
+        if (!itensPedidoRepository.existsById(id)) {
+            throw new RuntimeException("ItensPedido com ID " + id + " não encontrado");
+        }
+        itensPedidoRepository.deleteById(id);
     }
 }

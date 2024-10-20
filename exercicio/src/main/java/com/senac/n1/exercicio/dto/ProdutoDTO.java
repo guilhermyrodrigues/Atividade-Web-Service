@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ProdutoDTO {
     private Integer id;
-    private String descriPro;
+    private String desPro;
     private Integer qtdeProduto;
-    private Double valorProduto;
+    private Double varProduto;
 }

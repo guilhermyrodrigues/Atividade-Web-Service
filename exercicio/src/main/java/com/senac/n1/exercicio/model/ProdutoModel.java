@@ -7,15 +7,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "produto")
+@Table(name = "produtos")
 public class ProdutoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column(name = "descriPRODUTO")
-    private String descriPro;
-    @Column(name = "qtdePRODUTO")
+    @Column
+    private String desPro;
+    @Column
     private Integer qtdeProduto;
-    @Column(name = "valorPRODUTO")
-    private Double valorProduto;
+    @Column
+    private Double varProduto;
 }

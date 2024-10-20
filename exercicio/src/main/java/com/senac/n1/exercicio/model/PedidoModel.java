@@ -14,8 +14,8 @@ public class PedidoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column(name = "nroPEDIDO")
+    @Column
     private Long nroPedido;
-    @Column(name = "datPEDIDO")
+    @Column
     private LocalDateTime datPedido;
 }

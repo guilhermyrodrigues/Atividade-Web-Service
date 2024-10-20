@@ -16,11 +16,9 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "api/v1/pedidos")
+@RequestMapping(value = "api/pedidos")
 @Tag(name = "Pedido API", description = "API para gerenciamento de pedidos")
 public class PedidoResource implements IResource<PedidoDTO, Integer> {
-
-    // @author Guilhermy Rodrigues
 
     @Autowired
     PedidoService pedidoService;

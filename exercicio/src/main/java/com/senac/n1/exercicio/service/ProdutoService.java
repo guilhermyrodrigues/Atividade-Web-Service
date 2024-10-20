@@ -2,6 +2,8 @@ package com.senac.n1.exercicio.service;
 
 import com.senac.n1.exercicio.dto.ProdutoDTO;
 import com.senac.n1.exercicio.interfaces.IService;
+import com.senac.n1.exercicio.mapper.ProdutoMapper;
+import com.senac.n1.exercicio.model.ProdutoModel;
 import com.senac.n1.exercicio.repository.ProdutoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,88 +14,99 @@ import java.util.List;
 
 /**
  * Serviço para gerenciamento de produtos. Implementa as operações de
- * criação, leitura, atualização e remoção de produtos.
- *
- * @author Guilhermy Rodrigues
+ * criação, leitura, atualização e remoção de itens de um pedido.
  */
+
 @Service
 @Slf4j
 public class ProdutoService implements IService<ProdutoDTO, Integer> {
 
-    /**
-     * Cria um novo produto.
-     *
-     * @param entity DTO do produto a ser criado
-     * @return DTO do produto criado
-     */
+    private final ProdutoRepository produtoRepository;
+    private final ProdutoMapper produtoMapper;
 
     @Autowired
-    public ProdutoRepository produtoRepository;
+    public ProdutoService(ProdutoRepository produtoRepository, ProdutoMapper produtoMapper) {
+        this.produtoRepository = produtoRepository;
+        this.produtoMapper = produtoMapper;
+    }
+
+    /**
+     * Cria um novo no pedido.
+     *
+     * @param entity DTO do pedido a ser criado
+     * @return DTO do pedido criado
+     */
 
     @Override
     @Transactional(rollbackFor = Throwable.class)
     public ProdutoDTO create(ProdutoDTO entity) {
-        log.info("ProdutoService::create");
+        log.info("ProdutoService::create - Criando produto");
         log.debug("Valores: {}", entity);
-        // Implementação do método de criação
-        return null;
+        ProdutoModel produtoModel = produtoMapper.toEntity(entity);
+        ProdutoModel produtoSalvo = produtoRepository.save(produtoModel);
+        return produtoMapper.toDTO(produtoSalvo);
     }
 
     /**
-     * Busca um produto com base no seu identificador.
+     * Busca um pedido com base no seu identificador.
      *
-     * @param id ID do produto a ser buscado
-     * @return DTO do produto encontrado
+     * @param id ID do pedido a ser buscado
+     * @return DTO do pedido encontrado
      */
+
     @Override
     @Transactional(readOnly = true)
     public ProdutoDTO read(Integer id) {
-        log.info("ProdutoService::read(id)");
-        log.debug("Valores: {}", id);
-        // Implementação do método de leitura por ID
-        return null;
+        log.info("ProdutoService::read(id) - Buscando produto com ID: {}", id);
+        return produtoRepository.findById(id)
+                .map(produtoMapper::toDTO)
+                .orElseThrow(() -> new RuntimeException("Produto com ID " + id + " não encontrado"));
     }
 
     /**
-     * Retorna uma lista de todos os produtos.
+     * Retorna uma lista de todos os pedidos.
      *
-     * @return Lista de DTOs dos produtos
+     * @return Lista de DTOs dos pedidos
      */
     @Override
     @Transactional(readOnly = true)
     public List<ProdutoDTO> read() {
-        log.info("ProdutoService::read()");
-        log.debug("Valores: sem parâmetros");
-        // Implementação do método de leitura de todos os produtos
-        return List.of();
+        log.info("ProdutoService::read() - Buscando todos os produtos");
+        List<ProdutoModel> produtoModels = produtoRepository.findAll();
+        return produtoMapper.toDTOList(produtoModels);
     }
 
     /**
-     * Atualiza um produto com base no ID informado.
+     * Atualiza um pedido com base no ID informado.
      *
-     * @param id ID do produto a ser atualizado
-     * @param entity DTO do produto com os dados atualizados
-     * @return DTO do produto atualizado
+     * @param id ID do pedido a ser atualizado
+     * @param entity DTO do pedido com os dados atualizados
+     * @return DTO do pedido atualizado
      */
     @Override
     @Transactional(rollbackFor = Throwable.class)
     public ProdutoDTO update(Integer id, ProdutoDTO entity) {
-        log.info("ProdutoService::update");
-        log.debug("Valores: {} e {}", id, entity);
-        // Implementação do método de atualização
-        return null;
+        log.info("ProdutoService::update - Atualizando produto com ID: {}", id);
+        ProdutoModel produtoModel = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto com ID " + id + " não encontrado"));
+
+        produtoMapper.updateEntityFromDTO(entity, produtoModel);
+        ProdutoModel produtoAtualizado = produtoRepository.save(produtoModel);
+        return produtoMapper.toDTO(produtoAtualizado);
     }
 
     /**
-     * Deleta um produto com base no identificador informado.
+     * Deleta um pedido com base no identificador informado.
      *
-     * @param id ID do produto a ser deletado
+     * @param id ID do pedido a ser deletado
      */
     @Override
     @Transactional(rollbackFor = Throwable.class)
     public void delete(Integer id) {
-        log.info("ProdutoService::delete");
-        log.debug("Valores: {}", id);
-        // Implementação do método de deleção
+        log.info("ProdutoService::delete - Deletando produto com ID: {}", id);
+        if (!produtoRepository.existsById(id)) {
+            throw new RuntimeException("Produto com ID " + id + " não encontrado");
+        }
+        produtoRepository.deleteById(id);
     }
 }
