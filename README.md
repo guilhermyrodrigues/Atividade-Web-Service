@@ -1,8 +1,4 @@
-Aqui está uma reformulação do seu `README.md` incorporando as informações detalhadas sobre as configurações do projeto:
-
----
-
-# Projeto Exemplo Backend
+# Projeto E-COMMERCE Backend
 
 Este projeto é uma API para gerenciamento de produtos, utilizando **Spring Boot**, **PostgreSQL** e **MapStruct** para realizar operações de CRUD. Além disso, a API segue princípios de **12 Factor Apps**, com configurações externalizadas e organizadas no formato `application.yaml`.
 
